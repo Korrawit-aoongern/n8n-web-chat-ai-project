@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "https://your-n8n-instance.com/webhook/chatbot";
+const N8N_WEBHOOK_URL = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || "https://your-n8n-instance.com/webhook/chatbot";
 
 
 export default function Page() {
