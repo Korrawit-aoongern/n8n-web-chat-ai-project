@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 
 type Msg = { role: "user" | "assistant"; text: string };
 
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "https://your-n8n-instance.com/webhook/chatbot";
+
 
 export default function Page() {
   const [messages, setMessages] = useState<Msg[]>([
@@ -31,7 +33,7 @@ export default function Page() {
     setBusy(true);
 
     try {
-      const res = await fetch("https://korrawitaoongern67.app.n8n.cloud/webhook/chat", {
+      const res = await fetch(N8N_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-api-key": process.env.N8N_WEBHOOK_SECRET! },
         body: JSON.stringify({
