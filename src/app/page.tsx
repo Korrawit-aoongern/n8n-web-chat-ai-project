@@ -31,7 +31,7 @@ export default function Page() {
     setBusy(true);
 
     try {
-      const res = await fetch("https://yuzuru-orensu.app.n8n.cloud/webhook/chat", {
+      const res = await fetch("https://korrawitaoongern67.app.n8n.cloud/webhook/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-api-key": process.env.N8N_WEBHOOK_SECRET! },
         body: JSON.stringify({
@@ -53,40 +53,60 @@ export default function Page() {
   }
 
   return (
-    <main className="min-h-screen p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">MVP Web Chat (Next.js → n8n → Gemini)</h1>
+    <main className="min-h-screen p-6 max-w-2xl mx-auto flex flex-col">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-white mb-1">N8N Web Chat AI</h1>
+        <p className="text-white text-opacity-80">Powered by n8n & Gemini</p>
+      </div>
 
-      <div className="border rounded p-4 h-[60vh] overflow-auto space-y-3 bg-white">
+      <div className="flex-1 rounded-lg p-4 h-[60vh] overflow-auto space-y-3 bg-white shadow-lg">
         {messages.map((m, i) => (
           <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
-            <div className="inline-block max-w-[80%] rounded px-3 py-2 border">
-              <div className="text-xs opacity-60 mb-1">{m.role}</div>
-              <div className="whitespace-pre-wrap">{m.text}</div>
+            <div className={`inline-block max-w-[80%] rounded-lg px-4 py-2 shadow-sm ${
+              m.role === "user" 
+                ? "bg-blue-100 text-gray-800" 
+                : "bg-gray-100 text-gray-800"
+            }`}>
+              <div className="text-xs font-semibold mb-1 opacity-70">
+                {m.role === "user" ? "You" : "Assistant"}
+              </div>
+              <div className="whitespace-pre-wrap text-sm">{m.text}</div>
             </div>
           </div>
         ))}
+        {busy && (
+          <div className="text-left">
+            <div className="inline-block bg-gray-100 text-gray-800 rounded-lg px-4 py-2 shadow-sm">
+              <div className="flex gap-1">
+                <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></span>
+                <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-4 flex gap-2">
         <input
-          className="flex-1 border rounded px-3 py-2"
+          className="flex-1 border-0 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="พิมพ์ข้อความ..."
+          placeholder="Type a message..."
           disabled={busy}
         />
         <button
-          className="px-4 py-2 rounded bg-black text-white disabled:opacity-50"
+          className="px-6 py-3 rounded-lg bg-white text-blue-500 font-semibold disabled:opacity-60 hover:shadow-lg transition-shadow shadow-md disabled:cursor-not-allowed"
           onClick={send}
           disabled={busy}
         >
-          Send
+          {busy ? "..." : "Send"}
         </button>
       </div>
 
-      <div className="text-sm text-gray-600 mt-2">
-        Session: {sessionId} {busy ? " | กำลังคิด..." : ""}
+      <div className="text-xs text-white text-opacity-70 mt-3 text-center">
+        Session: {sessionId.slice(0, 8)}...
       </div>
     </main>
   );
